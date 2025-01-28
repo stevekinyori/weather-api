@@ -39,8 +39,8 @@ Follow these steps to get the application running locally:
 
 1. Clone the repository:
    ```
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/stevekinyori/weather-api
+   cd weather-api
     ```
 2. Install the dependencies:
   ```
