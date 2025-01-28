@@ -1,0 +1,285 @@
+openapi: 3.0.0
+info:
+  title: Weather API
+  description: API documentation for the Weather API.
+  version: "1.0.0"
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: user@example.com
+        password:
+          type: string
+          example: secret123
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR..."
+        user:
+          $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: "johndoe"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-01-28T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-01-28T12:00:00Z"
+    FavoriteLocation:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        city:
+          type: string
+          example: "Nairobi"
+        user:
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-01-28T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-01-28T12:00:00Z"
+    Weather:
+      type: object
+      properties:
+        temperature:
+          type: number
+          format: float
+          example: 25.5
+        description:
+          type: string
+          example: "Clear sky"
+        humidity:
+          type: integer
+          example: 60
+        windSpeed:
+          type: number
+          format: float
+          example: 5.5
+    Forecast:
+      type: object
+      properties:
+        date:
+          type: string
+          example: "2025-01-29"
+        temperature:
+          type: number
+          format: float
+          example: 26.5
+        description:
+          type: string
+          example: "Partly cloudy"
+security:
+  - BearerAuth: []
+paths:
+  /auth/login:
+    post:
+      summary: Login
+      tags:
+        - Authentication
+      description: Authenticate a user and return a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        200:
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+  /auth/profile:
+    get:
+      summary: Get user profile
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users:
+    get:
+      summary: Get all users
+      tags:
+        - User Management
+      responses:
+        200:
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /users/{username}:
+    get:
+      summary: Get user by username
+      tags:
+        - User Management
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The username of the user to retrieve.
+      responses:
+        200:
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /favorite-locations:
+    get:
+      summary: Get favorite locations
+      tags:
+        - Favorite Locations
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: A list of favorite locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FavoriteLocation'
+    post:
+      summary: Add a favorite location
+      tags:
+        - Favorite Locations
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavoriteLocation'
+      responses:
+        201:
+          description: Favorite location added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavoriteLocation'
+  /favorite-locations/{id}:
+    put:
+      summary: Update a favorite location
+      tags:
+        - Favorite Locations
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The ID of the favorite location to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FavoriteLocation'
+      responses:
+        200:
+          description: Favorite location updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FavoriteLocation'
+    delete:
+      summary: Delete a favorite location
+      tags:
+        - Favorite Locations
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: The ID of the favorite location to delete.
+      responses:
+        204:
+          description: Favorite location deleted
+  /weather/{city}:
+    get:
+      summary: Get current weather by city
+      tags:
+        - Weather
+      parameters:
+        - name: city
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the city.
+      responses:
+        200:
+          description: Weather data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Weather'
+  /forecast/{city}:
+    get:
+      summary: Get weather forecast
+      tags:
+        - Weather
+      parameters:
+        - name: city
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the city.
+      responses:
+        200:
+          description: Weather forecast data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Forecast'

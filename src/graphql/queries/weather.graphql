@@ -1,0 +1,16 @@
+query GetWeather($city: String!) {
+  getWeather(city: $city) {
+    temperature
+    description
+    humidity
+    windSpeed
+  }
+}
+
+query GetForecast($city: String!) {
+  getForecast(city: $city) {
+    date
+    temperature
+    description
+  }
+}

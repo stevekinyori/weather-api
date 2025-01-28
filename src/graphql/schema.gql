@@ -1,0 +1,88 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  username: String!
+  locations: [FavoriteLocation!]
+  createdAt: String!
+  updatedAt: String!
+}
+
+type FavoriteLocation {
+  id: ID!
+  city: String!
+  user: User!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Weather {
+  temperature: String!
+  description: String!
+  humidity: Int!
+  windSpeed: Int!
+}
+
+type Forecast {
+  date: String!
+  temperature: String!
+  description: String!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type Query {
+  sayHello: String!
+  getWeather(city: String!): Weather!
+  getForecast(city: String!): Forecast!
+
+  """Get all users"""
+  getUsers: [User!]!
+
+  """Get a user by username"""
+  getUser(username: String!): User!
+
+  """Get favorite locations by user ID"""
+  getFavoriteLocations(userId: String!): [FavoriteLocation!]!
+}
+
+type Mutation {
+  """Register a new user"""
+  register(input: RegisterInput!): User!
+
+  """Add a favorite location"""
+  addFavoriteLocation(input: AddFavoriteLocationInput!): FavoriteLocation!
+
+  """Update a favorite location"""
+  updateFavoriteLocation(input: UpdateFavoriteLocationInput!): FavoriteLocation!
+
+  """Delete a favorite location"""
+  deleteFavoriteLocation(id: String!): Boolean!
+
+  """Login and generate a token"""
+  login(input: LoginInput!): AuthPayload!
+}
+
+input RegisterInput {
+  username: String!
+  password: String!
+}
+
+input AddFavoriteLocationInput {
+  city: String!
+}
+
+input UpdateFavoriteLocationInput {
+  id: ID!
+  city: String!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}

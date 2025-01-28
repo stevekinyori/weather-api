@@ -1,0 +1,42 @@
+query GetFavoriteLocations($userId: String!) {
+  getFavoriteLocations(userId: $userId) {
+    id
+    city
+    createdAt
+    updatedAt
+    user {
+      id
+      username
+    }
+  }
+}
+
+mutation AddFavoriteLocation($input: AddFavoriteLocationInput!) {
+  addFavoriteLocation(input: $input) {
+    id
+    city
+    createdAt
+    updatedAt
+    user {
+      id
+      username
+    }
+  }
+}
+
+mutation UpdateFavoriteLocation($input: UpdateFavoriteLocationInput!) {
+  updateFavoriteLocation(input: $input) {
+    id
+    city
+    createdAt
+    updatedAt
+    user {
+      id
+      username
+    }
+  }
+}
+
+mutation DeleteFavoriteLocation($id: String!, $userId: String!) {
+  deleteFavoriteLocation(id: $id, userId: $userId)
+}
