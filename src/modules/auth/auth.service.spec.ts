@@ -101,7 +101,6 @@ describe('AuthService', () => {
     });
 
     it('should return undefined if user is null', () => {
-      // Mock the user as null and cast it to the expected type properly.
       const mockAuthenticatedUser = null as unknown as AuthenticatedUser;
 
       const result = authService.generateToken(mockAuthenticatedUser);

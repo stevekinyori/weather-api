@@ -70,7 +70,7 @@ describe('FavoriteLocationsService', () => {
       };
 
       userRepository.findOne.mockResolvedValue(mockUser);
-      favoriteLocationRepository.findOne.mockResolvedValue(null); // No existing location
+      favoriteLocationRepository.findOne.mockResolvedValue(null);
       favoriteLocationRepository.create.mockReturnValue(mockLocation);
       favoriteLocationRepository.save.mockResolvedValue(mockLocation);
       const result = await service.createFavorite(createLocationDto);

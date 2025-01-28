@@ -91,15 +91,12 @@ describe('AuthController', () => {
       });
     });
     it('should throw an UnauthorizedException if user is not authenticated', () => {
-      // Mock the AuthService to return undefined for the token
       authService.generateToken.mockReturnValue(undefined);
 
       const req = { user: mockUser } as { user: AuthenticatedUser };
 
-      // Expect the login method to throw UnauthorizedException
       expect(() => authController.login(req)).toThrow(UnauthorizedException);
 
-      // Ensure the AuthService's generateToken was called with the correct user
       expect(authService.generateToken).toHaveBeenCalledWith(mockUser);
     });
 

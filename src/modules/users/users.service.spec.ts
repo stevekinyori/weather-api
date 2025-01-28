@@ -57,11 +57,9 @@ describe('UsersService', () => {
       const salt = 'randomSalt';
       const hashedPassword = 'hashedPassword';
 
-      // Mock bcrypt methods
       jest.spyOn(bcrypt, 'genSalt').mockResolvedValue(salt as never);
       jest.spyOn(bcrypt, 'hash').mockResolvedValue(hashedPassword as never);
 
-      // Mock repository methods
       userRepository.create.mockReturnValue({
         ...mockUser,
         password: hashedPassword,
@@ -73,7 +71,6 @@ describe('UsersService', () => {
 
       const result = await usersService.createUser(createUserDto);
 
-      // Assertions
       expect(bcrypt.genSalt).toHaveBeenCalled();
       expect(bcrypt.hash).toHaveBeenCalledWith(createUserDto.password, salt);
       expect(userRepository.create).toHaveBeenCalledWith({
@@ -91,7 +88,7 @@ describe('UsersService', () => {
       expect(result).toEqual({
         id: 1,
         username: 'testuser',
-        password: '😊', // Sanitized password
+        password: '😊',
         locations: [],
         createdAt: expect.any(Date) as Date,
         updatedAt: expect.any(Date) as Date,
@@ -163,7 +160,7 @@ describe('UsersService', () => {
     it('should validate and return the user if credentials are correct', async () => {
       const password = 'password123';
       userRepository.findOne.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never); // Mock bcrypt.compare to return true
+      jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never); 
 
       const result = await usersService.validateUser(
         mockUser.username,
@@ -180,7 +177,7 @@ describe('UsersService', () => {
     it('should throw a NotFoundException if password is invalid', async () => {
       const password = 'wrongpassword';
       userRepository.findOne.mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as never); // Mock bcrypt.compare to return false
+      jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as never); 
 
       await expect(
         usersService.validateUser(mockUser.username, password),
@@ -193,7 +190,7 @@ describe('UsersService', () => {
     });
 
     it('should throw a NotFoundException if user is not found', async () => {
-      userRepository.findOne.mockResolvedValue(null); // Simulate user not found
+      userRepository.findOne.mockResolvedValue(null); 
 
       await expect(
         usersService.validateUser('nonexistent', 'password123'),
