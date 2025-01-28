@@ -3,7 +3,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ForecastResponse } from '../../common/interfaces/forecast-response.interface';
 import { WeatherResponse } from '../../common/interfaces/weather-response.interface';
-import { handleApiError } from 'src/common/utils/helpers';
+import { handleApiError } from '../../common/utils/helpers';
 
 @Injectable()
 export class WeatherService {

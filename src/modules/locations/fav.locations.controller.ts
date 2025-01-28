@@ -16,13 +16,13 @@ import { CreateLocationDto } from '../../common/dto/create-location.dto';
 import { UpdateLocationDto } from '../../common/dto/update-location.dto';
 import { FavoriteLocationsService } from './fav.locations.service';
 import { User } from '../../common/entities/user.entity';
-import { getErrorMessage } from 'src/common/utils/helpers';
+import { getErrorMessage } from '../../common/utils/helpers';
 
 @Controller('locations')
 export class FavoriteLocationsController {
   constructor(
     private readonly favoriteLocationsService: FavoriteLocationsService,
-  ) {}
+  ) { }
 
   /**
    * Create a new favorite location (Requires Authentication)
